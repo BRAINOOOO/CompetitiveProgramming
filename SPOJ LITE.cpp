@@ -1,6 +1,7 @@
-
-
-
+/*
+here the relation between the lazy and the answer is the lazy will store the whether there is operation on range or not by xoring with one 
+if there is relation then reverse if not dont enter 
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
@@ -51,14 +52,6 @@
 #define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
 #define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
 #define     point                    complex<double>
-#define    scani(n)                  scanf("%d",&n)
-#define    scanll(n)                  scanf("%I64d",&n)
-#define    printi(n)                 printf("%d",n)
-#define    printll(n)                 printf("%I64d",n)
-#define    scand(n)                  scanf("%lf",&n)
-#define    printd(n)                 printf("%lf",n)
-#define    scans(n)                  scanf("%s",&n)
-#define    prints(n)                 printf("%s",n)
 typedef  long long     ll ;
 typedef  unsigned long long ull;
 const double eps= (1e-10);
