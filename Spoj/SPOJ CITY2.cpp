@@ -1,3 +1,12 @@
+/*
+Here i think the idea is greedy :
+first you have to observe that every new height must be counted and 
+if its a pervious height to be considered as an expand to pervious 
+block all the blocks between them must be greater than or equal to 
+its height otherwise cosider it a new block.
+implementation : 
+how we can get the min height in a range so we need RMQ ( segment tree).
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
