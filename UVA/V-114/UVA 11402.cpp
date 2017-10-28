@@ -1,4 +1,4 @@
-*/
+/*
 here the is to focus on what the query what not the general problem to you will find 3 kinds
 of update 1- add range by 1 
           2-remove one from range
