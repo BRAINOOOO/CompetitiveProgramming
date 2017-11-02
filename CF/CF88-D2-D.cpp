@@ -75,162 +75,53 @@ int setBit1(int num, int idx) {return num | (1<<idx);}
 int setBit0(int num, int idx) {return num & ~(1<<idx);}
 int flipBit(int num, int idx) {return num ^ (1<<idx);}
 int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
-map< string,string> mb;
 
-string check(string s1)
+map <string, int> b;
+string w,x,y,z;
+int n,bc,ec,cb;
+int main() 
 {
-
-    for(auto i=mb.begin();i!=mb.end();i++)
+	b["void"]=0;
+  
+	cin >> n;
+	for(int j=0;j<n;j++)
+  {
+		bc=0;
+		ec=0;
+		cin >> w >> x;
+		if(w=="typedef")cin >> y;
+    
+		for(int i=0;i<x.length();i++)
     {
-
-        if(s1.find((*i).first)!=string::npos)
-        {
-           int id=s1.find((*i).first);
-           int fl=0;
-           string l="";
-            for(int i=0;i<id;i++)
-            {
-                 l+=s1[i];
-                  if(s1[i]!='&')
-                 {
-                     fl=1;
-                     break;
-                 }
-            }
-            if(fl)
-                continue;
-
-            string r="";
-            int siz=sz((*i).first);
-            fl=0;
-            for(int i=id+siz;i<sz(s1);i++)
-             {
-                 r+=s1[i];
-                 if(s1[i]!='*')
-                 {
-                     fl=1;
-                     break;
-                 }
-             }
-
-             if(fl)
-                continue;
-
-
-           string tot=l+((*i).second)+r;
-
-            if(((*i).second)=="errtype")
-                return "errtype";
-
-
-            int c2=0,c1=0;
-            for(int i=0;i<sz(tot);i++)
-            {
-                if(tot[i]=='*')
-                    c1++;
-                else if(tot[i]=='&')
-                    c2++;
-
-            }
-
-
-
-
-
-            if(c2>c1)
-                return "errtype";
-            else if(c2==c1)
-                return "void";
-            else
-            {
-                string ans="void";
-                for(int i=0;i<c1-c2;i++)
-                    ans+='*';
-
-                return ans;
-            }
-
-
-
-        }
-
-    }
-   int c1=0,c2=0,fl;
-    if(s1.find("void")!=string::npos)
+			if(x[i]=='&')bc++;
+			if(x[i]=='*')ec++;
+		}
+		z.resize(0);
+		for(int i=bc;i<x.length()-ec;i++)
     {
-        int id=s1.find("void");
-           int fl=0;
-           string l="";
-            for(int i=0;i<id;i++)
-            {
-                 l+=s1[i];
-                  if(s1[i]!='&')
-                 {
-                     fl=1;
-                     break;
-                 }
-                 c2++;
-            }
+			z+=x[i];
+		}
+		if(b.find(z)==b.end())b[z]=-1e9;
+		cb=b[z]+ec-bc;
+		if(cb<0)cb=-1e9;
 
-
-            string r="";
-
-            for(int i=id+4;i<sz(s1)&&!fl;i++)
-             {
-                 r+=s1[i];
-                 if(s1[i]!='*')
-                 {
-                     fl=1;
-                     break;
-                 }
-                 c1++;
-             }
-
-
-
-            if(c2>c1&&!fl)
-                return "errtype";
-            else if(c2==c1&&!fl)
-                return "void";
-            else if(!fl)
-            {
-                string ans="void";
-                for(int i=0;i<c1-c2;i++)
-                    ans+='*';
-
-                return ans;
-            }
-
-    }
-
-    return "errtype";
-
-}
-int main()
-{
-    int n;
-    cin>>n;
-    string state,s1,nw;
-
-    for(int i=0;i<n;i++)
+		if(w=="typedef")
     {
-        cin>>state;
-        if(state=="typedef")
+			b[y]=cb;
+		}else{
+			if(cb>=0){
+				cout << "void";
+				for(int i=0;i<cb;i++)
         {
+					cout << "*";
+				}
+			}
+      else
+      {
+				cout << "errtype";
+			}
+			cout << endl;
+		}
+	}
 
-            cin>>s1>>nw;
-           string s2 = check(s1);
-           mb[nw]=s2;
-
-
-
-        }
-        else
-        {
-            cin>>s1;
-
-           cout<< check(s1) <<endl;
-        }
-
-    }
 }
