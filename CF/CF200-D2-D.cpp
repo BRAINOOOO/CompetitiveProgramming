@@ -1,3 +1,9 @@
+/*
+my approach is the same as here
+http://codeforces.com/blog/entry/4769
+
+complexity : O( n*q*t )
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
