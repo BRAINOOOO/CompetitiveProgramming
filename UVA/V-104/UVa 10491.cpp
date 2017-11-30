@@ -1,5 +1,13 @@
 /*
-explanation : see 221 CP3
+explanation : here there are two ways to get a car the first way is to pick a car then switch to
+a car ( i must switch to another unopened door ) okay know what is the probability of picking a car
+ncars/(ncows+ncars) then what is the probability to switch to a car (ncars-1)/(ncars+ncows-show-1)
+why ncars-1 because we already open a car at first and i couldnt choose opened door, the second 
+way is to choose a cow and then switch to a car the probability of picking a cow is ncow/(ncars+ncows)
+then the probability of picking a car is ncars/(ncars+cows-show-1) here -1 because the first one we 
+picked it is already opened.
+
+complexity : O( 1 )
 */
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
