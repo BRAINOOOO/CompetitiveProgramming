@@ -1,6 +1,6 @@
 /*
 explanation : here by simulation you will find that exactly half of the space n place allowed
-and the other half not allowed and every length will take from the pervious one .
+and the other half not allowed and every length will take from the pervious one.
 
 complexity : O(1)
 */
