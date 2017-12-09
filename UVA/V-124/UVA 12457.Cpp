@@ -3,7 +3,7 @@ explanation : here the problem is direct dp the state will be on the number of m
 number of the win matches so far as to win n number of matches there are alot of sequences can
 happened so we will consider all the sequences that can happen and result in n win matches.
 
-complexity : (2n-1)*n*t
+complexity : (2n-1)*n*t.
 */
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
