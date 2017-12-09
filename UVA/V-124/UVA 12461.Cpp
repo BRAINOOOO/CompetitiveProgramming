@@ -2,6 +2,28 @@
 explanation : here by simulation you will find that exactly half of the space n place allowed
 and the other half not allowed and every length will take from the pervious one.
 
+First of all, write n = 2,3,4 cases and found that the probability is 1/2:
+
+Possible situps with n = 2: (1,2) (2,1);
+
+Possible sit-ups with n = 3: (1,2,3) (2,1,3) (2,3,1) (3,2,1)
+
+Possible sitings with n = 4: (1,2,3,4) (2,1,3,4) (2,3,1,4) (3,2,1,4) 
+
+(2,3,4,1) (2,4,3,1) (3,2,4,1) (4,2,3,1)
+
+Then, the observation found that the data per hour can be divided into two parts: replacement + unchanged, rewrite the above state:
+
+n = 2: () + (1,2), (2,1) + ();
+
+(2) + (3), (2, 3, 1) + (), (3, 1) + (2)
+
+When n = 4: () + (1,2,3,4), (2,1) + (3,4), (2,3,1) + (4), (3,1) + , 4) 
+
+(2,3,4,1) + (), (2,4,1) + (3), (3,4,1) + (2), (4,1) + (2,3)
+
+Finally, we conclude that n = k + 1 can be constructed by n = k, half remains unchanged, and half is added to the map so the probability is known as 0.5.
+
 complexity : O(1)
 */
 #include <bits/stdc++.h>
