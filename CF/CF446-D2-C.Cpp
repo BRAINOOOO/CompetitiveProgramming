@@ -51,16 +51,6 @@ void check(int l,vector<int> v)
             }
             v[i+1]=g;
         }
-        for(int i=l;i>0;i--)
-        {
-          int  g=__gcd(v[i],v[i-1]);
-            if(g==1)
-            {
-                mi=min(l-(i-1)-1,mi);
-                break;
-            }
-            v[i-1]=g;
-        }
 }
 int main()
 {
@@ -79,9 +69,7 @@ int main()
             check(l,v);
     }
    if(cnt>0)
-   {
        cout<<n-cnt<<endl;
-   }
     else if(mi==100000)
         cout<<-1<<endl;
     else
