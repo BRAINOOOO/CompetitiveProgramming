@@ -1,6 +1,6 @@
 /*
 explanation : first try to simulate possible graphs you will find that the graph could only be one of 
-the 2 scenarioes first can be of only one cycle and some paths(may be zero) second can be of paths only
+the 2 scenarioes first can be of only one cycle and some paths second can be of cycles only
 this because there is exactly one edge out of each node so calculate the answer for each component then 
 multiply, Now the solution for each part is let the nodes involved in the cycle (X) and other (T) the answer
 will be (2^x-2)*2^T  -2 bec flipping all the edges will result in the same cylcle but in opposite direction
