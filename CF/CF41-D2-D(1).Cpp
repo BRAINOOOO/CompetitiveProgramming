@@ -2,7 +2,7 @@
 explanation : here it is a simple dp state(row,column,sumMod) on the max number of peas divisible by k+1 
 with building output.
 
-complexity : O(n*m*(K+1))
+complexity : O(n*m*(K+1)).
 */
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
