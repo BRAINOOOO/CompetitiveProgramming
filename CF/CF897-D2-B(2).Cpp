@@ -50,7 +50,7 @@ int main()
     {
     for(int i=s;i<s*10&&k;i++,k--)
     {
-        sum= ((i*w*1ll+rev(i))+sum)%p;
+        sum= ((1ll*i*w+rev(i))+sum)%p;
     }
        s*=10;
        w*=10;
