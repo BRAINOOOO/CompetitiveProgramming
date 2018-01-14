@@ -33,62 +33,21 @@ ll setBit1(ll num, int idx) {return num | (1ll<<idx);}
 ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
 ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
 int countNumBit1(ll mask) {int ret=0; while (mask) 	{mask &= (mask-1ll);++ret;	}return ret;}
-vector<ll> v;
-int vis[100000+9];
-int main()
+
+const int MAX = 1000100;
+
+int main() 
 {
-     ll a,b,c;
-    cin>>a>>b>>c;
-
-    ll up=a;
-    ll down=b;
-    ll tup=up;
-    ll tdown=down;
-    ll u,ui;
-    int flag=0;
-    while(1)
+	int a, b, c;
+	cin >> a >> b >> c;
+	for (int i = 1; i < MAX; ++i) 
     {
-        vis[tup]=1;
-
-        if(tup<tdown)
-        {
-            flag=1;
-          int f=0;
-           while(tup<tdown)
-           {
-               tup*=10;
-               if(f)
-                v.pb(0);
-               f=1;
-           }
-        }
-            u= tup/tdown;
-            if(flag)
-                v.pb(u);
-            ui= u*down;
-            tup= tup-ui;
-            if(tup==0)
-            {
-                v.pb(0);
-                break;
-            }
-            if(vis[tup])
-                break;
-            tdown=down;
-        }
-        string ans="";
-        for(int i=0;i<sz(v);i++)
-        {
-           string s1= to_string(v[i]);
-            ans+=s1;
-        }
-        for(int i=0;i<sz(ans);i++)
-        {
-            if(ans[i]-'0'==c)
-            {
-                cout<<i+1<<endl;
-                return 0;
-            }
-        }
-        cout<<"-1\n";
+		a %= b;
+		a *= 10;
+		if (c == a / b)
+			return cout << i << endl, 0;
+	}
+	cout << -1 << endl;
+	return 0;
 }
+
