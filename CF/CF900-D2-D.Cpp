@@ -22,6 +22,7 @@ i want f(t) where t=y/x
                          i=size
         f(t) = 2^(t-1) -   sigma  f(t/ti)
                          i=2
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
