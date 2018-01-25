@@ -1,3 +1,8 @@
+/*
+explanation : the idea is i need the max xor between x and some number so from left to right i need the flipping digit to corresponding
+x digit when i reached a certain prefix its my periority so i need to search for the numbers having the same prefix and the next digit
+is the flipping digit if it exists trie expresses common prefix.
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
