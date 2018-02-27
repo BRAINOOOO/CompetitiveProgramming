@@ -45,19 +45,8 @@ int main()
     for(int i=0;i<n;i++)
     {
         cin>>d>>s;
-        D[i]+=d;
+        D[i]=d;
         S[i]=s;
-        if(d==1)
-        {
-            v[i]^=s;
-            D[i]--;
-            D[s]--;
-            v[s]^=i;
-            if(i<s)
-            ed.pb(mp(i,s));
-            else
-                ed.pb(mp(s,i));
-        }
     }
     queue<int> q;
     for(int i=0;i<n;i++)
@@ -95,15 +84,10 @@ int main()
         D[num]--;
         v[num]^=no;
         v[no]^=num;
-        if(no<num)
-        ed.pb(mp(no,num));
-        else
         ed.pb(mp(num,no));
          if(D[num]==1)
          q.push(num);
     }
-    sort(all(ed));
-    ed.erase(unique(all(ed)),ed.end());
     cout<<sz(ed)<<endl;
     for(int i=0;i<sz(ed);i++)
         cout<<ed[i].first<<" "<<ed[i].second<<endl;
