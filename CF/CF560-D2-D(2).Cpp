@@ -1,3 +1,8 @@
+/*
+explanation : here the idea is if i have string of 2 letters for example s1 and s2 the two strings will be equivalent if s1[0]=s2[0]&&
+s1[1]=s2[1] or s1[0]=s2[1] && s1[1]=s2[0] okay so if the two strings are sorted according to the same criteria so if they are equavilant
+so they must be equal.
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
