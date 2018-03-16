@@ -43,9 +43,7 @@ struct node
     {
         return l>e.l;
     }
-
 };
-
 ll dijk(vector< vector<node> > v)
 {
     clr(vis,0);
