@@ -1,3 +1,8 @@
+/*
+explanation :  if i have the max of a range and its smaller than my value so all the range will be
+updated and if i have the min of the range and its grater or equal to my value so there is no need to go
+farther in the tree using this two observation the answer created.
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
