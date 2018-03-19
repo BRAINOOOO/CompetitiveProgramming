@@ -1,3 +1,8 @@
+/*
+explanation : it is obvious that if i used the last position and put it in its index there is number after it will 
+change that and the number before either it will be in its index iff the number after doesn't affect on it or it
+will be shifted if it affects on it using this the solution  created.
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
