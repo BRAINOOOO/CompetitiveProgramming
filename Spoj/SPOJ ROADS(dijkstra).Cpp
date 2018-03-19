@@ -1,3 +1,7 @@
+ /*
+explanation : the idea is i will run dijkstra normally but without vis array or dist array bec i am not only want to min on length
+i minmize on price too .
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
