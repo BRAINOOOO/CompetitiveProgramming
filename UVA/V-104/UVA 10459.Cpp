@@ -1,3 +1,8 @@
+/*
+explanation : here it is obvious that the worest root will be leaf but every leaf no the leaf that from it i can reach max depth
+which is actually the tree diameter every leaf distance to reach it from another leaf equals to tree diameter both will be worst root
+and the best root will be the mid of this path .
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
