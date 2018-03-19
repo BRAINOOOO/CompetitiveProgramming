@@ -1,3 +1,7 @@
+/*
+explantion : the idea is imagine it is a graph and the edge between a node and another node is when the difference between them is one
+letter so simply i will go and check and construct the graph then do simple bfs
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
