@@ -1,3 +1,8 @@
+/*
+explanation : the idea is simple dijkstra but here the explanation of the calculation the time i will 
+reach with it a node the elevator from this node will go up and return back from the begining so i will calcualte 
+the position it reaches and the time i will wait till it comes back.
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
