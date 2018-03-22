@@ -36,7 +36,7 @@ ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
 void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
 int countNumBit1(ll mask) {int ret=0; while (mask) 	{mask &= (mask-1ll);++ret;	}return ret;}
 vector< int > v(200009);
-ll arr[200009][2],vis[200009][2],vis2[200009][2],n;
+ll arr[200009][2],vis[200009][2],n;
 ll inf=100000000000000000;
 ll solve(int id,int f)
 {
@@ -45,17 +45,13 @@ ll solve(int id,int f)
 
      if(vis[id][f])
      {
-         arr[id][f]=-1;
-         vis[id][f]=0;
-         return -1;
+        return arr[id][f];
      }
 
      vis[id][f]=1;
 
-    if(vis2[id][f])
-        return arr[id][f];
+     arr[id][f]=-1;
 
-    vis2[id][f]=1;
 
     if(f)
     {
@@ -82,7 +78,9 @@ ll solve(int id,int f)
       }
       else
         arr[id][f]=v[id]+res;
+
     }
+
     return arr[id][f];
 }
 int main()
@@ -93,16 +91,14 @@ int main()
     {
         scanf("%I64d",&v[i]);
     }
+
+
     for(int i=1;i<=n-1;i++)
     {
-        clr(vis,0);
-        vis[1][1]=1;
-        ll ans=solve(i+1,0);
-        vis[1][1]=0;
-        if(ans==-1)
-            printf("-1\n");
-        else
-            printf("%I64d\n",i+ans);
+
+        v[1]=i;
+        vis[1][1]=arr[1][1]=0;
+        cout<<solve(1,1)<<endl;
 
     }
 }
