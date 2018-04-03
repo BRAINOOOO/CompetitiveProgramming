@@ -1,5 +1,6 @@
 /*
-the algorithsm used is toplogical sort but by the iterative way the dfs won't work
+the algorithsm used is toplogical sort 
+it can be done iteratively as my code and recursively by sorting the adjlist[i] of the graph.
 */
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
