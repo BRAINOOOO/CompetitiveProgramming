@@ -38,10 +38,10 @@ const int MAX=(1<<18);
 pair<ll,ll> tree[MAX];
 pair<ll,ll> lazy[MAX];
 ll n,arr[100009];
- 
+
 void build(int s=1,int e=n,int root=1)
 {
- 
+
     if(s==e)
     {
         tree[root].first= arr[s];
@@ -49,144 +49,151 @@ void build(int s=1,int e=n,int root=1)
         return;
     }
     int mid=(s+e)>>1;
- 
+
     build(s,mid,root*2);
     build(mid+1,e,root*2+1);
- 
+
     tree[root].first= tree[root*2].first+tree[root*2+1].first;
     tree[root].second= tree[root*2].second+ tree[root*2+1].second;
- 
- 
+
+
 }
- 
+
 void apply(int root,int s,int mid,int e)
 {
- 
- 
+
+
     int lf=root*2;
     int rg=root*2+1;
-    if(lazy[root].second==0)
+    if(lazy[root].second==-1)
     {
- 
-    lazy[lf].first+=lazy[root].first;  lazy[lf].second=0;
-    lazy[rg].first+=lazy[root].first;  lazy[rg].second=0;
+
+    lazy[lf].first+=lazy[root].first;
+    lazy[rg].first+=lazy[root].first;
     tree[lf].second+= tree[lf].first*2*lazy[root].first+(lazy[root].first*lazy[root].first*(mid-s+1));
     tree[lf].first+= lazy[root].first*(mid-s+1);
- 
+
     tree[rg].second+=  tree[rg].first*2*lazy[root].first+(lazy[root].first*lazy[root].first*(e-(mid+1)+1));
     tree[rg].first+=   lazy[root].first*(e-(mid+1)+1);
- 
+
     lazy[root].first=0;
-    lazy[root].second=0;
     }
-    else
+    else if(lazy[root].second!=-1)
     {
-    lazy[lf].first=lazy[root].first;   lazy[lf].second=1;
-    lazy[rg].first=lazy[root].first;   lazy[rg].second=1;
-    tree[lf].second= lazy[root].first*lazy[root].first*(mid-s+1);
-    tree[lf].first= lazy[root].first*(mid-s+1);
- 
-    tree[rg].second=  lazy[root].first*lazy[root].first*(e-(mid+1)+1);
-    tree[rg].first=   lazy[root].first*(e-(mid+1)+1);
- 
-    lazy[root].first=0;
-    lazy[root].second=0;
- 
+    lazy[lf].second=lazy[root].second;
+    lazy[rg].second=lazy[root].second;
+    tree[lf].second= lazy[root].second*lazy[root].second*(mid-s+1);
+    tree[lf].first= lazy[root].second*(mid-s+1);
+
+    tree[rg].second=  lazy[root].second*lazy[root].second*(e-(mid+1)+1);
+    tree[rg].first=   lazy[root].second*(e-(mid+1)+1);
+
+
+    lazy[root].second=-1;
+
     }
 }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
 void update(int a,int b,int v,int f,int s=1,int e=n,int root=1)
 {
- 
+
     if(a>e||b<s)
         return ;
- 
+
     if(a<=s&&e<=b)
     {
- 
+
         if(f==0)
         {
- 
- 
+
+
             tree[root].second=(v*v)*(e-s+1);
             tree[root].first= v*(e-s+1);
-            lazy[root].first=v;
-            lazy[root].second=1;
+            lazy[root].first=0;
+            lazy[root].second=v;
             return ;
- 
+
         }
         else
         {
- 
+
             ll add= 2*v*tree[root].first;
             ll w= (v*v)*(e-s+1);
- 
+
             tree[root].second+=add+w;
             tree[root].first+= v*(e-s+1);
- 
+            if(lazy[root].first==0)
+            {
+                lazy[root].second+=v;
+
+            }
+            else
+            {
             lazy[root].first+=v;
             lazy[root].second=0;
+            }
             return;
         }
     }
     ll mid=(s+e)>>1;
     apply(root,s,mid,e);
- 
+
     update(a,b,v,f,s,mid,root*2);
     update(a,b,v,f,mid+1,e,root*2+1);
- 
+
     tree[root].second= tree[root*2].second+tree[root*2+1].second;
     tree[root].first= tree[root*2].first+tree[root*2+1].first;
- 
+
 }
- 
+
 ll query(int a,int b,int s=1,int e=n,int root=1)
 {
     if(a>e||b<s)
         return 0;
- 
- 
- 
+
+
+
     if(a<=s&&e<=b)
         return tree[root].second;
- 
+
     ll mid=(s+e)>>1;
     apply(root,s,mid,e);
- 
+
    return query(a,b,s,mid,root*2)+query(a,b,mid+1,e,root*2+1);
- 
+
 }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
+
 int main()
 {
     int t;
     cin>>t;
- 
+
     for(int cs=1;cs<=t;cs++)
     {
         int q;
         cin>>n>>q;
- 
+        for(int i=0;i<100000;i++)
+            lazy[i].second=-1;
         for(int i=1;i<=n;i++)
           cin>>arr[i];
         cout<<"Case "<<cs<<":\n";
@@ -203,7 +210,7 @@ int main()
             else if(st==0)
             {
                 cin>>a>>b>>x;
- 
+
                 update(a,b,x,0);
             }
             else
@@ -214,4 +221,3 @@ int main()
         }
     }
 }
- 
