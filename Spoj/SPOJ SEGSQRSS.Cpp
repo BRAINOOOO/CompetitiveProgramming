@@ -90,15 +90,9 @@ void apply(int root,int s,int mid,int e)
     else if(lazy[root].second!=-1)
     {
     
-     if(lazy[lf].second==-1)
-    lazy[lf].first=lazy[root].first;
-     else
+    
     lazy[lf].second=lazy[root].first,lazy[lf].first=0;
     
-    
-    if(lazy[rg].second==-1)
-    lazy[rg].first=lazy[root].first;
-     else
     lazy[rg].second=lazy[root].first,lazy[rg].first=0;
     
     
