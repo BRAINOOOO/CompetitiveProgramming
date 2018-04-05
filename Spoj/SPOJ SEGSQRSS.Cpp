@@ -93,13 +93,13 @@ void apply(int root,int s,int mid,int e)
      if(lazy[lf].second==-1)
     lazy[lf].first=lazy[root].first;
      else
-    lazy[lf].second=lazy[root].first;
+    lazy[lf].second=lazy[root].first,lazy[lf].first=0;
     
     
     if(lazy[rg].second==-1)
     lazy[rg].first=lazy[root].first;
      else
-    lazy[rg].second=lazy[root].first;
+    lazy[rg].second=lazy[root].first,lazy[rg].first=0;
     
     
     tree[lf].second= lazy[root].second*lazy[root].second*(mid-s+1);
