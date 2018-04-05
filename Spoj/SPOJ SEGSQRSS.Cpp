@@ -68,8 +68,17 @@ void apply(int root,int s,int mid,int e)
     if(lazy[root].second==-1)
     {
 
+     if(lazy[lf].second==-1)
     lazy[lf].first+=lazy[root].first;
+     else
+    lazy[lf].second+=lazy[root].first;
+    
+    
+    if(lazy[rg].second==-1)
     lazy[rg].first+=lazy[root].first;
+     else
+    lazy[rg].second+=lazy[root].first;
+    
     tree[lf].second+= tree[lf].first*2*lazy[root].first+(lazy[root].first*lazy[root].first*(mid-s+1));
     tree[lf].first+= lazy[root].first*(mid-s+1);
 
@@ -80,8 +89,19 @@ void apply(int root,int s,int mid,int e)
     }
     else if(lazy[root].second!=-1)
     {
-    lazy[lf].second=lazy[root].second;
-    lazy[rg].second=lazy[root].second;
+    
+     if(lazy[lf].second==-1)
+    lazy[lf].first=lazy[root].first;
+     else
+    lazy[lf].second=lazy[root].first;
+    
+    
+    if(lazy[rg].second==-1)
+    lazy[rg].first=lazy[root].first;
+     else
+    lazy[rg].second=lazy[root].first;
+    
+    
     tree[lf].second= lazy[root].second*lazy[root].second*(mid-s+1);
     tree[lf].first= lazy[root].second*(mid-s+1);
 
@@ -221,3 +241,4 @@ int main()
         }
     }
 }
+
