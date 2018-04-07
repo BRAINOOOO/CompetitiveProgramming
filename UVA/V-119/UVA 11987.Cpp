@@ -1,3 +1,6 @@
+/*
+here the algo used is DSU and i will try so seprate the nodes from each other to be independant
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
