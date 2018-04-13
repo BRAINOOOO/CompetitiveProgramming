@@ -1,3 +1,6 @@
+/*
+the idea of the problem is to multiply by log two both sides and i can already calculate x^y for x and y = 200 by long double
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
