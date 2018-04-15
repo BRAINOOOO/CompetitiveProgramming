@@ -1,3 +1,8 @@
+/*
+ topic is dp with graph
+ idea of the problem is at each step try all the possible cells and dfs till the step t if the returning is one means there is
+ a way this cell can reach end else there is no way so if there is a way just count it .
+ */
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
