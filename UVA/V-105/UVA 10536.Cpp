@@ -1,3 +1,7 @@
+/*
+topic dp with masks 
+please read the comments in the code
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
