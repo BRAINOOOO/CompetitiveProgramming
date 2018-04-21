@@ -1,3 +1,7 @@
+/*
+the dp recurrance have 2 ways whether to end the number of taken cDs from the stores now or to expand and i use a mask
+to handel the order i visit the stores.
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
