@@ -1,3 +1,6 @@
+/*
+the idea is to get the shortest path first then at main max 
+*/
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
