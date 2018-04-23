@@ -1,4 +1,6 @@
-
+/*
+the idea is to construct another graph with the hotels only then run dijkstra to minmize
+*/
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
