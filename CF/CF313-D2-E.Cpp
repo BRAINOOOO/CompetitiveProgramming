@@ -1,4 +1,6 @@
-
+/*
+the idea is i will get the best for each number if its best equals me so i will take it else i will take it with the other one
+*/
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
