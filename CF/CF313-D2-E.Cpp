@@ -3,6 +3,8 @@ the idea is i will get the best for each number if its best equals me so i will 
 */
 // ICPC Champion is here
 
+// ICPC Champion is here
+
 #include <bits/stdc++.h>
 #define sz(v)   ((int)(v).size())
 #define  all(v)    ((v).begin()),((v).end())
@@ -36,74 +38,54 @@ ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
 ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
 void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
 int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
-multiset<int> s1,s2,s;
+
+typedef multiset<int, greater<int> > Rset;
+
+Rset up, down;
 int n,m;
-vector<int> v;
 
-int getbest(int f,int val)
+int getBest(const Rset& s, int x)
 {
+    Rset :: iterator it = s.lower_bound(m - 1 - x);
+    if (it != s.end()) return *it;
+    return *s.begin();
+}
 
-    if(f==0)
-        s=s2;
-     else
-        s=s1;
-
-
-        int fr=1,sec=1;
-        int mx1= (m-1)-val;
-        int mx2=  mx1+m;
-
-        auto it=s.upper_bound(mx1);
-        multiset<int> :: iterator pos1;
-        if(it==s.begin())
-            fr=0;
-        else
-         {
-             it--;
-            pos1= it;
-         }
-
-        auto it2= s.upper_bound(mx2);
-
-        it2--;
-        auto pos2= it2;
-
-        if(fr==0)
-        {
-            return (*it2);
-        }
-        else
-        {
-            if((val+(*it))%m   > (val+(*it2))%m )
-            return (*it);
-
-           return (*it2);
-        }
-    }
 int main()
 {
-    cin>>n>>m;
-    int no;
-    for(int i=0;i<n;i++)
-        cin>>no,s1.insert(no);
 
-    for(int i=0;i<n;i++)
-        cin>>no,s2.insert(no);
-
-    while(!s1.empty())
+    int c,c2;
+    scanf("%d%d",&n,&m);
+    for (c=0;c<n;c++)
     {
-        int a=(*s1.begin());
-        int b= getbest(0,a);
-        int c= getbest(1,b);
-
-            v.pb((c+b)%m);
-
-            s1.erase(s1.find(c));
-            s2.erase(s2.find(b));
-
+        int x;
+        scanf("%d",&x);
+        up.insert(x);
     }
+    for (c=0;c<n;c++)
+    {
+        int x;
+        scanf("%d",&x);
+        down.insert(x);
+    }
+    vector<int> ret;
+    while (ret.size() < n)
+    {
+        int A = *up.begin();
+        int B = getBest(down, A);
+        int C = getBest(up, B);
 
-    sort(allr(v));
-   for(int i=0;i<sz(v);i++)
-    cout<<v[i]<<" ";
+        ret.push_back((B + C) % m);
+
+        up.erase(up.find(C));
+        down.erase(down.find(B));
+    }
+    sort(ret.rbegin(), ret.rend());
+
+    printf("%d",ret[0]);
+
+    for (c=1;c<ret.size();c++)
+        printf(" %d",ret[c]);
+
+    printf("\n");
 }
