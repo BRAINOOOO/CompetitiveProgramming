@@ -1,3 +1,7 @@
+/*
+the idea is based mainly on tour of hanoi problem and the greedy here is that to get the min path yu have to assign each disc
+to its target peg in order this the min way.
+*/
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
