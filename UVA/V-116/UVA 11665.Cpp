@@ -8,7 +8,7 @@
 #define   mp         make_pair
 #define   mt         make_tuple
 #define    clr(v,d)      memset( v, d ,sizeof(v))
-#define   angle(n)      atan2((n.imag()),(n.real()))
+/*#define   angle(n)      atan2((n.imag()),(n.real()))
 #define   vec(a,b)       ((b)-(a))
 #define   length(a)      hypot( (a.imag()),(a.real()) )
 #define   normalize(a)      (a)/(length(a))
@@ -22,6 +22,7 @@
 #define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
 #define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
 #define     point                    complex<double>
+*/
 typedef  long long     ll ;
 typedef  unsigned long long ull;
 const double eps= (1e-10);
@@ -33,8 +34,7 @@ ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
 ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
 void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
 int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
-#include <bits/stdc++.h>
-using namespace std;
+
 
 
 struct point {
