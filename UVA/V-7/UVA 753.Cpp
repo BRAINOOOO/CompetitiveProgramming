@@ -1,3 +1,10 @@
+/*
+the idea is to get the max matching 
+1-put a super source which its edge to each plug is the number of this plug kind
+2-put a super sink which is connected to each device by capacity one
+3-and for each adapter connecting two nodes the edge is inf since i can use it unlimited number of times
+*/
+
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
