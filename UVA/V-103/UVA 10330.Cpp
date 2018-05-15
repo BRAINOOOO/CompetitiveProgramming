@@ -1,3 +1,6 @@
+/*
+just split the vertexes to express the effect of its capacity
+*/
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
