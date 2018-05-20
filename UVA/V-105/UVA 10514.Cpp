@@ -1,3 +1,11 @@
+/*
+the idea is to let the river like a graph and the nodes are the islands and you are trying to get from side of the river which is node 0
+to the other side which is node n+1 as i assumed it so the point is to build the graph to get the min distance you can use dp,dijkstra 
+or even floyed
+*/
+
+
+
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
