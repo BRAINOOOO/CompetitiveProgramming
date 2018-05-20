@@ -1,3 +1,8 @@
+/*
+just brudeforce and use DSU 
+*/
+
+
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
