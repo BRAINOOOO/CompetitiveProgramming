@@ -45,6 +45,7 @@ map< int,int> previs,vis;
 set<int> s;
 int main()
 {
+    M();
     int n,m,p;
     cin>>n>>m>>p;
 
@@ -98,6 +99,7 @@ int main()
        }
 
    }
+   sort(all(ans));
    cout<<sz(ans)<<endl;
    for(int i=0;i<sz(ans);i++)
     cout<<ans[i]<<" ";
