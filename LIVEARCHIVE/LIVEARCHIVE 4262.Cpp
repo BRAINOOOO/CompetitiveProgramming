@@ -1,5 +1,6 @@
+/*
 algo used : SCC by tarjan
-
+*/
 // ICPC Champion is here
 
 #include <bits/stdc++.h>
