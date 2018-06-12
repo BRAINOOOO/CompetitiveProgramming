@@ -1,3 +1,10 @@
+/*
+observe that each time i change only one element in one of the matrixes so i can calculate the product matrix first then just update 
+it according to the element the query asks to update.
+To know how just trace the product of 2 matrixes :)
+*/
+
+
 // ICPC champion is here
 #include <bits/stdc++.h>
 #include<iostream>
