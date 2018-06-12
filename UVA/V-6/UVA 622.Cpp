@@ -1,3 +1,8 @@
+/*
+it is obvious that it can be solved recursively 
+*/
+
+
 // ICPC champion is here
 #include <bits/stdc++.h>
 #include<iostream>
