@@ -1,3 +1,7 @@
+/*
+build a DAG using SCC then the max between the indegree when it is equal to zero  and outdegree of each SCC 
+*/
+
 // ICPC champion is here
 #include <bits/stdc++.h>
 #include<iostream>
