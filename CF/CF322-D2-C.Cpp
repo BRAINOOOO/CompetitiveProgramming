@@ -40,39 +40,16 @@ int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}r
 ll X,Y,x,y,fl;
 string st;
 ll sx,sy,GX,GY;
-
-int getquad(ll GX,ll GY)
-{
-    int fl;
-    if(GX>=0&&GY>=0)
-        fl=1;
-    else if(GX<=0&&GY>=0)
-        fl=2;
-    else if(GX<=0&&GY<=0)
-        fl=3;
-    else
-        fl=4;
-    return fl;
-}
-
-
-
-
-
-
-
-
-
-
 int main()
 {
 
     cin>>x>>y>>st;
-    if(x==0&&y==0)
+    if(!x&&!y)
     {
         cout<<"Yes\n";
-        return 0;
+         return 0;
     }
+
     GX=0,GY=0;
     for(int i=0;i<sz(st);i++)
     {
@@ -89,15 +66,6 @@ int main()
 
 
     }
-    if(GX>=0&&GY>=0)
-        fl=1;
-    else if(GX<=0&&GY>=0)
-        fl=2;
-    else if(GX<=0&&GY<=0)
-        fl=3;
-    else
-        fl=4;
-       // cout<<fl<<" "<<GY<<" "<<GX<<endl;
     X=0,Y=0;
     for(int i=0;i<sz(st);i++)
     {
@@ -119,14 +87,8 @@ int main()
            return 0;
        }
 
-
-      if(getquad(sx,sy)!=fl)
-        continue;
-
-
-     bool ok1= (GX==0? sx==0 : sx%GX==0);
-     bool ok2= (GY==0? sy==0 : sy%GY==0);
-
+     bool ok1= (GX==0? sx==0 : (sx%GX==0&&sx/GX>=0));
+     bool ok2= (GY==0? sy==0 : (sy%GY==0&&sy/GY>=0));
        if(ok1&&ok2&&sx*GY==GX*sy)
        {
            cout<<"Yes\n";
@@ -137,9 +99,6 @@ int main()
 
  cout<<"No\n";
 }
-
-
-
 
 
 
