@@ -1,6 +1,12 @@
 /*
 see 
 http://zobayer.blogspot.com/2010/02/primitive-root.html
+you may ask why the one shouldbe at the end the answer is bec if it happened at any other position the number after it will be repeated
+trace one sample to understand why, and Since n is a prime, we know that gφ(n) = gn - 1 = 1. We want to know if there is another 
+exponent e < n - 1 such that ge = 1.
+Let e be the smallest, positive integer with ge = 1. This means that the exponents that give 1 are exactly 0, e, 2e, 3e, .... This means that e divides n - 1. If e is really smaller than n - 1, then there must exist a prime factor p of n - 1, such that e still divides . Which means that .
+
+So it is sufficient to check if any of the terms , with p prime and p | n - 1, is equal to 1.
 */
 // ICPC champion is here
 #include <bits/stdc++.h>
