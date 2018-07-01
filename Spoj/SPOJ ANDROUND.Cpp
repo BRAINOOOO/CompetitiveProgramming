@@ -1,4 +1,21 @@
 // ICPC champion is here
+/*
+/*
+  Idea:
+    - The idea is that the anding operation occurs in some way, so you
+      do not need to make the all operations independently, for example:
+      if we have the following array: 2 2 3 4 2, and k = 2
+      after the first step:  2 2 0 0 0
+      (2 & 2 & 2) (2 & 2 & 3) (2 & 3 & 4) (3 & 4 & 2) (4 & 2 & 2)
+      after the second step: 0 0 0 0 0
+      (0 & 2 & 2) (2 & 2 & 0) (2 & 0 & 0) (0 & 0 & 0) (0 & 0 & 2)
+      You can see that the value of index 2 (which is contains 2 also)
+      at the end of operations is 0, and it is equivalint to:
+      (2 & 2 & 2 & 3 & 4)
+      So for each index i the value of it will be:
+      a[i] = a[i-k] & a[i-k+1] & ... & a[i] & ... & a[i+k-1] & a[i+k]
+    - This can be obtained using Segment Tree.
+*/
 #include <bits/stdc++.h>
 #include<iostream>
 #include<iomanip>
