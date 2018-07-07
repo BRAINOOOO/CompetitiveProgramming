@@ -40,7 +40,7 @@ ll arr[1008][1008],n,m,SX[1009],SY[1009];
 
 int main()
 {
-
+     M();
     cin>>n>>m;
 
     for(int i=0;i<n;i++)
