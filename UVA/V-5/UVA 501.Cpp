@@ -36,7 +36,7 @@ ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
 ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
 void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
 int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
-vector<int> st;
+multiset<int> st;
 ll A[300009],U[300009];
 int main()
 {
@@ -64,29 +64,32 @@ int main()
        for(int i=0;i<n;i++)
         cin>>U[i];
        int j=0;
-       int id=0,cnt=0;
+       int inc=0,cnt=0;
+       multiset<int> ::iterator it;
        for(int i=0;i<m;i++)
        {
 
-            if(i==0)
-                st.pb(A[i]);
-            else
-            {
+                st.insert(A[i]);
+                if(i==0)
+                it=st.begin();
 
-               auto it= lower_bound(all(st),A[i]);
-
-                st.insert(it,A[i]);
-
-
-            }
+                if(A[i]<(*it))
+                {
+                   it--;
+                }
+              if(inc>0)
+                it++,inc--;
 
 
             while(j<n&&sz(st)==U[j])
             {
+                if(inc>0)
+                    it++,inc--;
                 //cout<<id<<" ";
-                cout<<st[id]<<endl;
-                id++;
+                cout<<(*it)<<endl;
                 j++;
+                inc++;
+
             }
 
 
@@ -94,6 +97,16 @@ int main()
        }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
