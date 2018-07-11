@@ -1,3 +1,15 @@
+/*
+First you may get the solution at first as a brude force but it will TLE so think of obtimization
+1- memorize the states 
+2- try to obtimaize the Dp code eg return once the len reach t and other things
+3- in general if there is a thing that its value is 1 or 0 only define it boolean this can TL :)
+4- obtimize in the code contant time like getting the path array alone which will TL
+
+good luck
+*/
+
+
+
 // ICPC champion is here
 #include <bits/stdc++.h>
 #include<iostream>
