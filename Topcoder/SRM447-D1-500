@@ -1,0 +1,191 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+int vis[100],v[100][100],v1[100][100],pathlen,path[100];
+int dfs(int S,int T,int len,int mi)
+{
+    path[len]=S;
+
+    if(S==T)
+    {
+        pathlen=len;
+        return mi;
+    }
+
+    vis[S]=1;
+
+    for(int i=0;i<100;i++)
+    {
+        if(vis[i]||v1[S][i]<=0)
+            continue;
+        int rt=dfs(i,T,len+1,min(mi,v1[S][i]));
+        if(rt>0)
+            return rt;
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+int MaxFlow(int S,int T)
+{
+    int flows=0;
+
+    while(1)
+    {
+        clr(vis,0);
+       int val=dfs(S,T,0,INT_MAX);
+       if(!val)
+            break;
+
+         for(int i=1;i<=pathlen;i++)
+         {
+             int f=path[i-1];
+             int t=path[i];
+
+             v1[f][t]-=val;
+             v1[t][f]+=val;
+         }
+         flows+=val;
+    }
+    return flows;
+}
+
+
+
+
+
+void fun(int s,int e)
+{
+
+    v1[s][40+s]=INT_MAX;
+    v1[e][40+e]=INT_MAX;
+    
+    for(int i=0;i<=40;i++)
+    {
+        if(i==s||i==e)
+            continue;
+        
+        if(v[s][i]==1&&v[i][e]==1)
+        {
+            v1[s+40][i]=INT_MAX;
+            v1[i][i+40]=1;
+            
+            v1[i+40][e]=INT_MAX;
+        }
+
+    }
+
+   for(int i=0;i<=40;i++)
+   {
+       for(int j=0;j<=40;j++)
+       {
+           if(i==s||i==e)
+            continue;
+           if(j==s||j==e)
+            continue;
+           
+           if(v[s][i]==1&&v[i][j]==1&&v[j][e]==1)
+           {
+    
+               v1[s+40][i]=INT_MAX;
+               v1[i][40+i]=1;
+               
+               v1[i+40][j]=INT_MAX;
+               v1[j][40+j]=1;
+
+
+               v1[j+40][e]=INT_MAX;
+           }
+
+       }
+   }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+class PeopleYouMayKnow
+{
+public:
+
+    int maximalScore(vector <string> fr, int s, int e)
+    {
+
+        for(int i=0;i<sz(fr);i++)
+        {
+            for(int j=0;j<sz(fr[0]);j++)
+            {
+              if(fr[i][j]=='Y')
+              {
+                v[i][j]=1;
+              }
+            }
+        }
+
+        fun(s,e);
+
+       return MaxFlow(s,e+40);
+    }
+
+
+
+};
+
+
+
+
+
