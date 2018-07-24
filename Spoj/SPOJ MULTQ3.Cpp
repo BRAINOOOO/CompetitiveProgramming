@@ -1,3 +1,8 @@
+/*
+idea : all the values you will get moded by 3 is 0,1,2 and what i want is simply counting the number of zeros
+the lazy will store the number of times i updated a certain range bec by it i can get the value of the current range.
+*/
+
 #include <bits/stdc++.h>
 #include<iostream>
 #include<iomanip>
