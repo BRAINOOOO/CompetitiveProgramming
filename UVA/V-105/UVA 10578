@@ -1,0 +1,133 @@
+/*
+idea : simply dynamic programming note if you think it must be 2^24 you are wrong bec i don't care about which one i take i only care 
+about there is remaining one or not
+*/
+
+
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+int mem[32][5][5][5][5][5][5];
+
+int solve(int sum,int one,int two,int three,int four,int five,int six)
+{
+    if(sum>31)
+        return 0;
+
+    int &ret=mem[sum][one][two][three][four][five][six];
+    if(ret!=-1)
+        return ret;
+
+    int res=0;
+    if(one<4)
+        res|=solve(sum+1,one+1,two,three,four,five,six);
+    
+    if(two<4)
+        res|=solve(sum+2,one,two+1,three,four,five,six);
+
+    if(three<4)
+        res|=solve(sum+3,one,two,three+1,four,five,six);
+
+    if(four<4)
+        res|=solve(sum+4,one,two,three,four+1,five,six);
+
+    if(five<4)
+        res|=solve(sum+5,one,two,three,four,five+1,six);
+
+    if(six<4)
+        res|=solve(sum+6,one,two,three,four,five,six+1);
+    
+   return ret=!res;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+    string st;
+    while(cin>>st)
+    {
+         int val[8];
+         clr(val,0);
+        int s=0;
+        for(int i=0;i<sz(st);i++)
+        {
+            val[st[i]-'0']++;
+            s+=(st[i]-'0');
+            
+          
+        }
+        
+         
+        clr(mem,-1);
+        int res=solve(s,val[1],val[2],val[3],val[4],val[5],val[6]);
+        
+       if(sz(st)%2==0)
+       {
+
+        if(res)
+            cout<<st<<" "<<"B\n";
+        else
+            cout<<st<<" "<<"A\n";
+       }
+       else
+       {
+           if(!res)
+            cout<<st<<" "<<"B\n";
+        else
+            cout<<st<<" "<<"A\n";
+       }
+        
+    }
+}
+
+
