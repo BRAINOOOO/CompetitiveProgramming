@@ -1,0 +1,173 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+set< pair< pair<int,int> ,int>>ed;
+int arr[109][109],path[109][109],v[109][109];
+vector<int> v1;
+
+
+void I(int n)
+{
+    ed.clear();
+    clr(v,0);
+    for(int i=0;i<109;i++)
+        for(int j=0;j<109;j++)
+         arr[i][j]=100000000;
+
+     for(int i=1;i<=n;i++)
+       for(int j=1;j<=n;j++)
+        path[i][j]=i;
+
+}
+
+
+bool check(int n)
+{
+
+    for(int k=1;k<=n;k++)
+    {
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                if(arr[i][k]+arr[k][j]<=arr[i][j])
+                {
+
+                   arr[i][j]=arr[i][k]+arr[k][j];
+                   path[i][j]=path[k][j];
+                }
+            }
+        }
+    }
+
+
+}
+
+void getpath(int s,int e)
+{
+
+    if(s!=e)
+    getpath(s,path[s][e]);
+
+    v1.pb(e);
+}
+
+bool isok(int n)
+{
+   for(int i=1;i<=n;i++)
+   {
+       for(int j=i+1;j<=n;j++)
+       {
+           if(arr[i][j]!=v[i][j])
+            return 0;
+       }
+   }
+   return 1;
+}
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+    int T,cs=1;
+    cin>>T;
+    int n;
+    while(T--)
+    {
+
+        cin>>n;
+        I(n);
+        int no;
+        for(int i=1;i<=n-1;i++)
+        {
+            for(int j=1;j<=i;j++)
+            {
+                cin>>no;
+
+                arr[i+1][j]=min(no,arr[i+1][j]);
+                arr[j][i+1]=arr[i+1][j];
+                v[i+1][j]=no;
+                v[j][i+1]=no;
+            }
+        }
+
+        printf("Case #%d:\n",cs++);
+        check(n);
+
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=i+1;j<=n;j++)
+            {
+                v1.clear();
+                getpath(i,j);
+
+                for(int k=0;k<sz(v1)-1;k++)
+                {
+                   int f=v1[k];
+                   int t=v1[k+1];
+                    if(f>t)
+                        swap(f,t);
+
+                    ed.insert(mp(mp(f,t),arr[f][t]));
+                }
+
+            }
+        }
+
+
+        if(isok(n))
+        {
+            cout<<sz(ed)<<endl;
+            for(auto i=ed.begin();i!=ed.end();i++)
+                cout<<(*i).first.first<<" "<<(*i).first.second<<" "<<(*i).second<<endl;
+        }
+        else
+            cout<<"Need better measurements.\n";
+        cout<<endl;
+    }
+}
+
+
+
+
