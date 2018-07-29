@@ -1,0 +1,131 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+const int H=100009;
+vector< vector<int> > v(100009);
+int I=0,tree=1,siz[H],st[H],lastpos[H],ready[H],lastchild[H],A[H],B[H],en[H];
+void dfs(int no)
+{
+
+    st[no]=I++;
+    for(int i=0;i<sz(v[no]);i++)
+    {
+        int nw=v[no][i];
+
+        if(st[nw]==-1)
+        {
+            dfs(nw);
+            siz[no]+=siz[nw];
+        }
+
+    }
+
+    en[no]=I++;
+}
+
+
+
+
+
+
+
+
+int main()
+{
+    int n,m,s,q;
+    cin>>n>>m>>s>>q;
+    clr(lastpos,-1);
+    for(int i=0;i<=n;i++)
+        ready[i]=1,siz[i]=1;
+
+    int a,b;
+    for(int i=0;i<s;i++)
+    {
+        cin>>a>>b;
+        lastchild[a]=b;
+        A[i]=a;
+        B[i]=b;
+    }
+    for(int i=0;i<s;i++)
+    {
+        a=A[i]; b=B[i];
+
+       if(b==lastchild[a])
+       {
+           if(lastpos[b]!=-1)
+           {
+               v[a].pb(lastpos[b]);
+               v[lastpos[b]].pb(a);
+               ready[a]=0;
+           }
+       }
+       lastpos[b]=a;
+
+
+    }
+    
+    clr(st,-1);
+    for(int i=1;i<=n;i++)
+    {
+        if(ready[i])
+        {
+            dfs(i);
+        }
+    }
+
+
+    while(q--)
+    {
+        cin>>a>>b;
+        int otherchild= lastpos[b];
+
+
+
+        if(otherchild!=-1&&st[otherchild]>=st[a]&&en[otherchild]<=en[a])
+            cout<<siz[a]<<endl;
+        else
+             cout<<"0\n";
+
+    }
+}
+
+
+
+
+
+
+
