@@ -1,3 +1,16 @@
+/*
+the idea
+first observe that if a child requests a certain toy so he already get all the pervious toys he need so till the last 
+toy i know he got all other ones for the last toy to get it he depends on the child where this toy with at the last 
+time or if the toy is free so he does't depend on anyone , from here i constructed a dependency tree where all the 
+children depend on the root as he say first there is no child cry so all the children will be given all the toys hey 
+need at end ( there is no cycles ) but if this happen and the child which holds the requested toy Y the subtree of 
+child x so this will cause a cycle and child x and y will never play and all other children depending on them too 
+so the result will be all the children in the subtree of child x which can be calculated by (dfs dp) else it will be 
+okay to child x to depend on the other child and won't cause cycles so the answer will be zero.
+*/
+
+
 #include <bits/stdc++.h>
 #include<iostream>
 #include<iomanip>
