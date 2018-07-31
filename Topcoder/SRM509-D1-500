@@ -1,0 +1,240 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+const ll inf=1e18;
+ll mem[59][59],er[27],ch[27][27],ad[27],dist[27][27],vis[27];
+string st;
+
+typedef struct Node
+{
+    ll no,w;
+    Node(ll no,ll w) : no(no),w(w) {}
+
+    bool operator < (const Node &e) const
+    {
+        return w>e.w;
+    }
+}N;
+vector< vector<N> > v(59);
+
+void dijk(int s)
+{
+    for(int i=0;i<26;i++)
+        dist[s][i]=inf;
+
+    clr(vis,0);
+    dist[s][s]=0;
+
+    priority_queue<N> pq;
+    pq.push(N(s,0));
+
+    while(!pq.empty())
+    {
+        N cur=pq.top();
+        pq.pop();
+        if(vis[cur.no])
+            continue;
+
+        vis[cur.no]=1;
+
+        ll add=cur.w;
+
+        for(int i=0;i<sz(v[cur.no]);i++)
+        {
+            ll nw=v[cur.no][i].no;
+            ll we=v[cur.no][i].w;
+            if(dist[s][nw]>add+we)
+            {
+                dist[s][nw]=add+we;
+                pq.push(N(nw,add+we));
+            }
+
+
+        }
+    }
+}
+
+
+
+
+
+ll solve(int i,int j)
+{
+
+    if(j<=i)
+        return 0;
+
+
+     ll &ret=mem[i][j];
+     if(ret!=-1)
+            return ret;
+    ll res=inf;
+
+
+    if(er[st[i]-'a']!=inf)
+        res=min(res, er[st[i]-'a']+solve(i+1,j));
+
+    if(er[st[j]-'a']!=inf)
+        res=min(res, er[st[j]-'a']+solve(i,j-1));
+
+
+    for(int k=0;k<26;k++)
+    {
+        int f1=st[i]-'a';
+        int f2=st[j]-'a';
+
+        res=min( res, ad[k]+ch[f1][k]+solve(i,j-1));
+        res=min( res, ad[k]+ch[f2][k]+solve(i+1,j));
+        res=min(res, ch[f1][k]+ch[f2][k]+solve(i+1,j-1));
+    }
+
+
+    return ret=res;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class  PalindromizationDiv1
+{
+public :
+
+     ll getMinimumCost(string word, vector <string> operations)
+     {
+         int n=sz(word);
+         st=word;
+         for(int i=0;i<26;i++)
+             ad[i]=inf,er[i]=inf;
+
+         for(int i=0;i<26;i++)
+             for(int j=0;j<26;j++)
+               ch[i][j]=inf;
+         string op;
+         char c1,c2;
+         ll cost;
+         for(int i=0;i<sz(operations);i++)
+         {
+             stringstream ss(operations[i]);
+
+             ss>>op;
+             if(op=="erase")
+             {
+                 ss>>c1>>cost;
+                 er[c1-'a']=cost;
+             }
+             else if(op=="change")
+             {
+                 ss>>c1>>c2>>cost;
+                 ch[c1-'a'][c2-'a']=cost;
+
+                 v[c1-'a'].pb(N(c2-'a',cost));
+             }
+             else if(op=="add")
+             {
+                 ss>>c1>>cost;
+                 ad[c1-'a']=cost;
+             }
+         }
+       for(int i=0;i<26;i++)
+        dijk(i);
+        for(int i=0;i<26;i++)
+        {
+            for(int j=0;j<26;j++)
+            {
+
+                    ch[i][j]=min(ch[i][j],dist[i][j]);
+            }
+        }
+        bool ok=1;
+        while(ok)
+        {
+            ok=0;
+        for(int i=0;i<26;i++)
+        {
+            for(int j=0;j<26;j++)
+            {
+                 if(er[i]>er[j]+ch[i][j])
+                  er[i]=ch[i][j]+er[j],ok=1;
+
+            }
+        }
+        }
+        ok=1;
+        while(ok)
+      {
+          ok=0;
+       for(int i=0;i<26;i++)
+       {
+
+           for(int j=0;j<26;j++)
+           {
+               if(ad[i]>ad[j]+ch[j][i])
+               ad[i]=ad[j]+ch[j][i],ok=1;
+           }
+
+       }
+      }
+
+         clr(mem,-1);
+        ll res= solve(0,n-1);
+
+        if(res>=inf)
+            return -1;
+        return res;
+
+     }
+};
+
+
+
+
+
+
+
+
+
