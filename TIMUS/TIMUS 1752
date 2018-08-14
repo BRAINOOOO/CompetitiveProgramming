@@ -1,3 +1,13 @@
+/*
+the idea is that if i get the longest path starting from a the given node so i can get the other node which is d distance from
+it,now how could i get the longest path path starting from a certain node remeber that the longest path in a tree is the tree diameter
+of it and the longest path from a certain node must join the tree diameter and ends in one of the  two ends of the tree diameter
+from here i will get the longest path and as the distance between every 2 nodes is the number of edges between them i will use the 
+kth ancestor to get the other node.
+*/
+
+
+
 #include <bits/stdc++.h>
 #include<iostream>
 #include<iomanip>
