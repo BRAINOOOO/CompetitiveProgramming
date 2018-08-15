@@ -1,0 +1,122 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+const int INF32 = 1E9;
+const ll INF64 = 4E18;
+//const ll M = 1E9 + 7;
+const double EPS = 1E-9;
+const double PI = 2 * acos(0);
+typedef pair<ll,ll> ii;
+int main()
+{
+    M();
+   int n, m;
+   cin >> n >> m;
+    set<pair<ll, ii>> edge_list;
+    vector<set<ii>> g(m);
+    for(int i = 0; i < n; i++)
+    {
+        int p, c;
+        cin >> p >> c;
+        p--;
+        edge_list.insert({c, {i, p}});
+        g[p].insert({c, i});
+    }
+    ll min_cost = INF64;
+
+    // Brute force on the number of votes allocated to 0th candidate
+    for(int v = 1; v <= n; v++)
+    {
+        ll cost = 0;
+        set<ii> used; // maintains the edges allocated to 0th candidate
+        for(ii e: g[0])
+            used.insert({e.second, 0});
+
+        bool possible = true;
+        for(int i = 1; i < m; i++)
+        { // don't start from the 0th candidate
+            // try to reduce votes of other candidates so that 0th candidate can win by just having v votes
+            if(sz(g[i]) >= v)
+            {
+                int req = (sz(g[i]) - v) + 1;
+                if(req > sz(g[i]))
+                {
+                    possible = false;
+                    break;
+                }
+                // note that g[i] is increasingly sorted
+                auto itr = g[i].begin();
+                for(int j = 0; j < req; j++)
+                {
+                    cost += itr->first;
+                    used.insert({itr->second, i});
+                    itr++;
+                }
+            }
+        }
+
+        // indicates it is not possible to assign x votes to 0 and (<= x - 1) votes to other candidates
+        if(not possible)
+            continue;
+
+        // SZ(used) indicates the maximum votes the 0th candidate can obtain
+        // if it is greater than the votes needed, some of the votes can be allocated to other candidates
+        // if it is less allocate non-used edges by traversing the edge_list, which is sorted increasingly
+        if(sz(used) < v)
+        {
+            int req = v - sz(used);
+            for(auto e: edge_list)
+            {
+                if(req == 0)
+                    break;
+                if(used.find(e.second)==used.end())
+                {
+                    req--;
+                    cost += e.first;
+                }
+            }
+            // sufficent votes could not be obtained for the 0th candidate
+            if(req != 0)
+                continue;
+        }
+        min_cost = min(cost, min_cost);
+    }
+    // min_cost == INF64 should never happen
+    // a solution always exists according to the problem statement
+    cout << min_cost;
+    return 0;
+}
