@@ -1,0 +1,224 @@
+/*
+the idea
+first observe that all the direct children to the water source ( node 1 ) if there is a position of a gang at every sub tree its root
+is one of those children so the min thing is to cut all the edges from node 1 and every child but here it is also required to minmize
+the number of the victim cities so the optimal thing is to cut the edge that lead to the LCA between all the positions of the gangs.
+/*
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+int n,q;
+const int HH=100009;
+int tree[4*HH],H[HH],level[HH],par[HH],p[HH][20],in[HH],out[HH],id,siz[HH];
+vector< vector<int> > v(HH);
+set<int> ss;
+void dfs(int no,int lv,int head)
+{
+    H[no]=head;
+    level[no]=lv;
+    in[no]=++id;
+    bool leaf=1;
+    for(int i=0;i<sz(v[no]);i++)
+    {
+        int nw=v[no][i];
+        par[nw]=no;
+        leaf=0;
+        dfs(nw,lv+1,head==-1?nw:head);
+        siz[no]+=siz[nw];
+    }
+    if(leaf)
+        siz[no]=1;
+    out[no]=id;
+}
+void prep()
+{
+    clr(par,-1);
+     clr(p,-1);
+    dfs(1,1,-1);
+
+
+    for(int i=1;i<=n;i++)
+        p[i][0]=par[i];
+    for(int j=1;(1<<j)<n;j++)
+    {
+        for(int i=1;i<=n;i++)
+        {
+            if(p[i][j-1]!=-1)
+                p[i][j]=p[p[i][j-1]][j-1];
+        }
+    }
+}
+int LCA(int a,int b)
+{
+
+    if(level[a]>level[b])
+        swap(a,b);
+    int mx=(int)log2(level[b]);
+
+    for(int i=mx;i>=0;i--)
+    {
+        if(level[b]-(1<<i)>=level[a])
+            b=p[b][i];
+    }
+    if(b==a)
+        return a;
+
+    for(int i=mx;i>=0;i--)
+    {
+        if(p[b][i]!=-1&&p[b][i]!=p[a][i])
+        {
+            b=p[b][i];
+            a=p[a][i];
+        }
+    }
+
+    return par[a];
+}
+
+
+
+
+
+void update(int s,int e,int a,int b,int val,int p=1)
+{
+    if(s>b||e<a)
+        return ;
+    if(s>=a&&e<=b)
+    {
+        tree[p]=val;
+        return;
+    }
+    int mid=(s+e)/2;
+    update(s,mid,a,b,val,p*2);
+    update(mid+1,e,a,b,val,p*2+1);
+
+    if(tree[2*p]&&tree[p*2+1])
+        tree[p]= LCA(tree[p*2],tree[p*2+1]);
+    else if(tree[2*p])
+        tree[p]= tree[2*p];
+    else
+        tree[p]= tree[2*p+1];
+
+}
+int query(int s,int e,int a,int b,int p)
+{
+    if(e<a||s>b)
+        return 0;
+    if(s>=a&&e<=b)
+    {
+        return tree[p];
+    }
+    int mid=(s+e)/2;
+    int lf= query(s,mid,a,b,p*2);
+    int rg=query(mid+1,e,a,b,p*2+1);
+
+    if(lf&&rg)
+        return LCA(lf,rg);
+    else if(lf)
+        return lf;
+    else
+        return rg;
+}
+
+
+
+
+int main()
+{
+
+     freopen("gangsters.in", "r", stdin);
+	freopen("gangsters.out", "w", stdout);
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+    cin>>n>>q;
+    int no;
+    for(int i=2;i<=n;i++)
+    {
+        cin>>no;
+        v[no].pb(i);
+
+    }
+
+    prep();
+   int cnt1,cnt2;
+   cnt1=cnt2=0;
+   while(q--)
+   {
+       char ch;
+       int no,s;
+       cin>>ch>>no;
+       if(ch=='+')
+       {
+           cnt1++;
+           s=query(1,id,in[H[no]],out[H[no]],1);
+           auto it=ss.find(s);
+           if(it!=ss.end())
+           ss.erase(it);
+
+           cnt2-= siz[s];
+
+
+           update(1,id,in[no],out[no],no);
+           s=query(1,id,in[H[no]],out[H[no]],1);
+           ss.insert(s);
+           cnt2+=siz[s];
+       }
+       else
+       {
+           cnt1--;
+           s=query(1,id,in[H[no]],out[H[no]],1);
+               auto it=ss.find(s);
+               if(it!=ss.end())
+               ss.erase(it);
+               cnt2-= siz[s];
+
+
+           update(1,id,in[no],out[no],0);
+           s=query(1,id,in[H[no]],out[H[no]],1);
+           if(s)
+           {
+           ss.insert(s);
+           cnt2+=siz[s];
+           }
+
+       }
+       cout<<sz(ss)<<" "<<cnt2-cnt1<<endl;
+   }
+}
+
+
+
