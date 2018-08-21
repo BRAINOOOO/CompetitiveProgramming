@@ -1,0 +1,144 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+vector<int> an;
+vector<string> v;
+vector<int> pv,thv,exper;
+ll mem[59][59][59],n,lim;
+
+ll solve(int myth,int myp,int stm)
+{
+    if(myth>=lim&&myp>=lim)
+    {
+        return 0;
+
+    }
+
+
+    ll &ret=mem[myth][myp][stm];
+    if(ret!=-1)
+        return ret;
+    ll ans=INT_MAX;
+    for(int i=0;i<n;i++)
+    {
+        int id=atoi(v[i].c_str());
+        int t=thv[id];
+        int p=pv[id];
+        int ex=exper[id];
+
+        if(ex<=stm)
+            continue;
+
+        if(myth>=t-1&&myp>=p-1)
+        {
+            if(t>myth||p>myp)
+            {
+               ans=min(ans,1+ solve(max(myth,t),max(myp,p),stm+1));
+            }
+
+        }
+    }
+    return ret=ans;
+}
+void print(int myth,int myp,int stm)
+{
+    if(myth>=lim&&myp>=lim)
+    {
+        return ;
+
+    }
+
+
+    ll ans=INT_MAX;
+    ll mi=-1;
+    for(int i=0;i<n;i++)
+    {
+        int id=atoi(v[i].c_str());
+        int t=thv[id];
+        int p=pv[id];
+        int ex=exper[id];
+
+        if(ex<=stm)
+            continue;
+
+        if(myth>=t-1&&myp>=p-1)
+        {
+            if(t>myth||p>myp)
+            {
+                if(1+ solve(max(myth,t),max(myp,p),stm+1) < ans)
+                {
+                    ans=1+ solve(max(myth,t),max(myp,p),stm+1);
+                    mi=id;
+                }
+            }
+
+        }
+    }
+    if(mi!=-1)
+    {
+
+      an.pb(mi);
+      int mxth=max(myth,thv[mi]);
+      int mxp=max(myp,pv[mi]);
+      print(mxth,mxp,stm+1);
+    }
+
+}
+
+
+class CsCourses
+{
+public:
+
+    vector <int> getOrder(vector <int> thvv, vector <int> pvv, vector <int> expp, int skillBound)
+    {
+        thv=thvv;
+        pv=pvv;
+        exper=expp;
+         n=sz(thv);
+         for(int i=0;i<n;i++)
+            v.pb(to_string(i));
+        lim=skillBound;
+        clr(mem,-1);
+        ll res=solve(0,0,0);
+        if(res>n)
+            return vector<int>();
+
+        print(0,0,0);
+        return an;
+    }
+};
