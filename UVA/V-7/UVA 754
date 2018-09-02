@@ -1,0 +1,179 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-9);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+ll getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+vector< vector<ll> > v1(109),v(109);
+ll mi=INT_MAX;
+int n;
+vector< pair<point,point> > seg;
+int ccw(point a,point b,point c)
+{
+    point v1(b-a),v2(c-a);
+    double t=cp(v1,v2);
+    if(t>+eps)
+        return +1;
+    if(t<-eps)
+        return -1;
+    if(v1.real()*v2.real() < -eps || v1.imag()*v2.imag()< -eps)
+        return -1;
+    if(norm(v1)< norm(v2)-eps)
+        return +1;
+    return 0;
+}
+bool isintersect(point p1,point p2,point p3,point p4)
+{
+    bool x=(p1==p2); bool y=(p3==p4);
+    if(x&&y)
+        return (p1==p3);
+    if(x)
+        return ccw(p3,p4,p1)==0;
+    if(y)
+        return ccw(p1,p2,p3)==0;
+
+    return ccw(p1,p2,p3)*ccw(p1,p2,p4) <=0 && ccw(p3,p4,p1)*ccw(p3,p4,p2) <=0;
+}
+void calc(point a,point b)
+{
+    ll ans=0;
+    for(int i=0;i<n;i++)
+    {
+        ans+=isintersect(a,b,seg[i].first,seg[i].second);
+
+    }
+    
+    mi=min(mi,ans);
+}
+void I()
+{
+    v.clear();
+    v.resize(109);
+    v1.clear();
+    v1.resize(109);
+    seg.clear();
+    mi=INT_MAX;
+}
+int main()
+{
+    int T;
+    cin>>T;
+    int in=0;
+    while(T--)
+    {
+        I();
+        if(in)
+            cout<<endl;
+        in=1;
+        cin>>n;
+        v[0].pb(0);
+        v[0].pb(100);
+        v[100].pb(0);
+        v[100].pb(100);
+        
+        v1[0].pb(0);
+        v1[0].pb(100);
+        v1[100].pb(100);
+        v1[100].pb(0);
+        
+        int x1,y1,x2,y2;
+        for(int i=0;i<n;i++)
+        {
+            cin>>x1>>y1>>x2>>y2;
+            seg.pb(mp(point(x1,y1),point(x2,y2)));
+            v[x1].pb(y1);
+            v[x2].pb(y2);
+            v1[y2].pb(x2);
+            v1[y1].pb(x1);
+
+        }
+
+        sort(all(v[0]));
+        double x,y;
+        cin>>x>>y;
+        point tar=point(x,y);
+        for(int i=1;i<sz(v[0]);i++)
+        {
+            y1=v[0][i-1];
+
+            y2=v[0][i];
+
+
+
+            point mid= point( 0 , (y1+y2)/2.0 );
+            calc(mid,tar);
+
+        }
+        sort(all(v[100]));
+
+        for(int i=1;i<sz(v[100]);i++)
+        {
+            y1=v[100][i-1];
+            y2=v[100][i];
+
+            point mid= point( 100 , (y1+y2)/2.0 );
+            calc(mid,tar);
+
+        }
+
+        sort(all(v1[0]));
+
+        for(int i=1;i<sz(v1[0]);i++)
+        {
+            x1=v1[0][i-1];
+            x2=v1[0][i];
+
+            point mid= point( (x1+x2)/2.0 , 0 );
+            calc(mid,tar);
+        }
+
+        sort(all(v1[100]));
+
+        for(int i=1;i<sz(v1[100]);i++)
+        {
+            x1=v1[100][i-1];
+            x2=v1[100][i];
+
+            point mid= point( (x1+x2)/2.0 , 100 );
+            calc(mid,tar);
+        }
+
+        cout<<"Number of doors = "<<mi+1<<endl;
+
+    }
+}
+
+
+
+
