@@ -1,0 +1,412 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+//#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+int getBit(int num, int idx) {return ((num >> idx) & 1) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+char arr[7][11];
+int mem[(1<<19)+9],mb[7][11];
+
+int solve(int msk)
+{
+
+
+    int &ret=mem[msk];
+
+    if(ret!=-1)
+        return ret;
+
+
+    // verical
+
+    int ans=0,nmsk;
+    for(int i=3,j=1;i<=5;i++,j++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=5;l++,r++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=2,j=2;i<=5;i++,j++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=5;l++,r++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=1,j=3;i<=5;i++,j++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=5;l++,r++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=1,j=5;i<=4;i++,j++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=4;l++,r++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=1,j=7;i<=3;i++,j++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=3;l++,r++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    //-----------------------------------------
+
+    // horizontal
+
+    for(int i=1,j=3;j<=7;j+=2)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;r<=7;r+=2)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=2,j=2;j<=8;j+=2)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;r<=8;r+=2)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=3,j=1;j<=9;j+=2)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;r<=9;r+=2)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+
+    for(int i=4,j=2;j<=8;j+=2)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;r<=8;r+=2)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=5,j=3;j<=7;j+=2)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;r<=7;r+=2)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    //----------------------------------------
+    // vertical from other side
+
+    for(int i=3,j=9;i<=5;j--,i++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=5;r--,l++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+     for(int i=2,j=8;i<=5;j--,i++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=5;r--,l++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+
+     for(int i=1,j=7;i<=5;j--,i++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=5;r--,l++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=1,j=5;i<=4;j--,i++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=4;r--,l++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+    for(int i=1,j=3;i<=3;j--,i++)
+    {
+        nmsk=msk;
+        for(int l=i,r=j;l<=3;r--,l++)
+        {
+
+           if(getBit(msk,mb[l][r])==0&&arr[l][r]=='O')
+           {
+             nmsk=setBit1(nmsk,mb[l][r]);
+             ans|= solve(nmsk);
+           }
+           else
+            break;
+        }
+    }
+
+
+    return ret=!ans;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+
+    for(int i=1;i<=5;i++)
+        for(int j=1;j<=9;j++)
+         arr[i][j]='.';
+
+    int id=0;
+      char ch;
+        for(int j=3,i=1;j<=7;j+=2)
+        {
+            cin>>ch;
+            arr[i][j]=ch;
+            mb[i][j]=id++;
+
+        }
+        for(int j=2,i=2;j<=8;j+=2)
+        {
+            cin>>ch;
+            arr[i][j]=ch;
+            mb[i][j]=id++;
+
+        }
+        for(int i=3,j=1;j<=9;j+=2)
+        {
+            cin>>ch;
+            arr[i][j]=ch;
+            mb[i][j]=id++;
+
+        }
+
+        for(int i=4,j=2;j<=8;j+=2)
+        {
+            cin>>ch;
+            arr[i][j]=ch;
+            mb[i][j]=id++;
+
+        }
+        for(int i=5,j=3;j<=7;j+=2)
+        {
+            cin>>ch;
+            arr[i][j]=ch;
+            mb[i][j]=id++;
+
+        }
+
+
+
+    
+    clr(mem,-1);
+    int ans=solve(0);
+
+    if(!ans)
+        cout<<"Karlsson\n";
+    else
+        cout<<"Lillebror\n";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
