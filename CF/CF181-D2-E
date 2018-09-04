@@ -1,0 +1,71 @@
+/*
+At first observe that the problem can be handeled manually, just simulate many grids starting from the small numbers to larger and
+solve them and you will note that after a specific constrains the second will always can win.
+Analysis for the cases
+if the difference in rows or colums is zero or one or two so the difference in the other demension must be less than or equal to four
+( to understand it try to draw it)
+Here there is a special case if the difference in one denmension is three because the difference in the other one must be less than or
+equal to three.
+
+if one of the  above conditions done so the first can win.
+
+if we will go through bigger constrains it is obvious that the second will win.
+*/
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+int getBit(int num, int idx) {return ((num >> idx) & 1) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+
+int main()
+{
+    int n,m,x1,x2,y1,y2;
+    cin>>n>>m>>x1>>y1>>x2>>y2;
+    int dx=abs(x2-x1);
+    int dy=abs(y2-y1);
+    bool ok= ((dx==0||dx==1||dx==2)&&dy<=4)||((dy==0||dy==1||dy==2)&&dx<=4)||(dx==3&&dy<=3)||(dy==3&&dx<=3);
+
+    if(ok)
+        cout<<"First";
+    else
+        cout<<"Second";
+}
+
+
+
+
+
+
+
