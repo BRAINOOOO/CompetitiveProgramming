@@ -1,0 +1,120 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-9);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+int getBit(int num, int idx) {return ((num >> idx) & 1) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+double R[4],X[4],Y[4];
+double moves[8][2] = {{1.0, 0.0}, {-1.0, 0.0}, {0.0, 1.0}, {0.0, -1.0}, {1.0, 1.0}, {1.0, -1.0}, {-1.0, 1.0}, {-1.0, -1.0}};
+double D[4];
+
+double dist(double x1,double y1,double x2,double y2)
+{
+    return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+}
+double estimate(double px,double py)
+{
+        vector<double> a(3);
+        vector<double> b(3);
+        for(int i = 0; i < 3; i++)
+                a[i] = dist(px, py, X[i], Y[i]);
+        double mx=0.0;
+        mx = max(mx,fabs(a[0] / a[1] - R[0] / R[1]));
+        mx = max(mx,fabs(a[0] / a[2] - R[0]/ R[2]));
+        mx = max(mx,fabs(a[2] / a[1] - R[2] / R[1]));
+        return mx;
+}
+
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+    double step=10.0,x=0.0,y=0.0;
+    for(int i=0;i<3;i++)
+    {
+        cin>>X[i]>>Y[i]>>R[i];
+        x+=X[i];
+        y+=Y[i];
+
+    }
+    x/=3;
+    y/=3;
+    double mx=estimate(x,y);
+
+    while(step>eps)
+    {
+        int i;
+        for(i=0;i<8;i++)
+        {
+            x+= step*moves[i][0];
+            y+= step*moves[i][1];
+
+            double res=estimate(x,y);
+
+            if(res<mx)
+            {
+                mx=res;
+                break;
+            }
+            else
+            {
+                x-= step*moves[i][0];
+                y-= step*moves[i][1];
+            }
+        }
+
+        if(i==8)
+            step/=2.0;
+    }
+     if(fabs(mx-0.0)<=eps)
+    cout<<setprecision(6)<<x<<" "<<y<<endl;
+
+}
+
+
+
+
+
+
+
+
+
