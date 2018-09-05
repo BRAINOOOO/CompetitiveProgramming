@@ -1,3 +1,9 @@
+/*
+Hill Climbing Algorithsm
+the idea is about if i have an answer which is very estimated but not exact answer so i will try do move in other directions and once 
+a direction makes me closer to the solution i take it and from it search for a direction which makes me more closer to the solution untill
+i get the exact solution.
+*/
 #include <bits/stdc++.h>
 #include<iostream>
 #include<iomanip>
