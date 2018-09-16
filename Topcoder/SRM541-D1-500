@@ -1,0 +1,215 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<map>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     point                    complex<double>
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-5);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+int getBit(int num, int idx) {return ((num >> idx) & 1) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+int MOD=1000000007;
+string lef,righ,middel,X,F,hack;
+ll len[59];
+ll k;
+
+char gt(int t,ll p)
+{
+
+    if(t==0)
+    {
+        string s=lef+X+middel+X+righ;
+        if(p>=sz(s))
+        return '-';
+        return s[(int)p];
+    }
+   ll x=len[t-1];
+   for(int i=0;i<sz(hack);i++)
+   {
+
+
+       if(hack[i]=='*')
+       {
+           if(p>=x)
+           {
+               p-=x;
+           }
+           else
+            return gt(t-1,p);
+       }
+       else
+       {
+           if(p==0)
+            return hack[i];
+           p--;
+       }
+   }
+
+   return '-';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ll A(int t)
+{
+
+    ll x=len[t-1],p=0;
+    vector< ll> valid;
+    for(int i=0;i<sz(hack);i++)
+    {
+        if(hack[i]=='*')
+        {
+
+            for(int o=1;o<sz(F)&&o<=x;o++)
+                valid.pb(p+x-o);
+
+
+            p+=x;
+        }
+        else
+        {
+            valid.pb(p);
+            p++;
+        }
+    }
+    ll cnt=0;
+    //ll siz=sz(hack)-2+2*x;
+    for(int i=0;i<sz(valid);i++)
+    {
+        bool ok=1;
+        int k=0;
+        for(k=0;k<sz(F)&&ok;k++)
+        {
+             if(gt(t,valid[i]+k)!=F[k])
+                    ok=0;
+
+        }
+        if(ok)
+            cnt++;
+
+    }
+    return cnt;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class AkariDaisukiDiv1
+{
+        public:
+        int countF(string FF, string B, string C, string S, string _F, int K)
+        {
+           lef=FF; righ=C; middel=B; X=S; F=_F; k=K;
+           hack= lef+"*"+middel+"*"+righ;
+
+           len[0]=sz(lef)+sz(X)+sz(middel)+sz(X)+sz(righ);
+
+           for(int i=1;i<50;i++)
+            len[i]=2*len[i-1]+sz(hack)-2;
+
+            ll ad=0,res=0;
+
+            string s=lef+X+middel+X+righ;
+
+            for(int i=0;i<sz(s);i++)
+            {
+                int ok=1,k=0;
+                for(int j=i;j<sz(s)&&k<sz(F)&&ok;j++,k++)
+                    if(F[k]!=s[j])
+                       ok=0;
+                if(ok&&k==sz(F))
+                    res++,res%=MOD;
+            }
+
+
+
+
+
+            for(int i=1;i<k;i++)
+            {
+                if(i<=50)
+                {
+                    ad=A(i);
+
+                    res=(res*2+ad)%MOD;
+                }
+                else
+                    res= (res*2+ad)%MOD;
+
+
+
+            }
+        return res;
+        }
+};
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+    AkariDaisukiDiv1 e;
+    cout<<e.countF("waai"
+,"akari"
+,"daisuki"
+,"usushio"
+,"id"
+,10000000);
+}
