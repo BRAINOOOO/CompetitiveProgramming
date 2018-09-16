@@ -1,3 +1,17 @@
+/*
+the pervious state always have information for the current state from here the Dp sense comes if i have N substrings at the pervious 
+state so at the current state i will have at least 2*N substrings bec the current state is  W prev state A prev state D where
+W Waai 
+D Daisuki
+A Akari 
+okay now why i said at least bec at each new step we add W at begin and D at the end and A at the middel which may add some F substrings
+so i will get this added a mount first observe that the after some k which is 50 the number of the added substrings will be constant 
+( simulate and observe ) so i just need to calculate the added amount for 50 loops only okay how could do that as the length grow
+expontially at each time, I will do that in a D&C way i will take all the valid postions to start from it the substring F and then 
+check.
+*/
+
+
 #include <bits/stdc++.h>
 #include<iostream>
 #include<iomanip>
