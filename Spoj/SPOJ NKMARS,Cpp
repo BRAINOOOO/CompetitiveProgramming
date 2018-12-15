@@ -1,0 +1,135 @@
+#include <bits/stdc++.h>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+#define   Y            imag()
+#define   X            real()
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+#define    dp(a,b)          (((conj(a))*(b)).real())
+#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+//#define     point                    complex<double>
+#define outfile freopen("out.out", "w", stdout);
+#define infile  freopen("in.in", "r", stdin);
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-9);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+int getBit(ll num, int idx) {return ((num >> idx) & 1ll) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(ll num, int idx) {return num ^ (1ll<<idx);}
+void M(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask) 	{mask &= (mask-1);++ret;	}return ret;}
+const int N=50009,Entry=0,Exist=1;
+struct point
+{
+    int x,y;
+    point()
+    {
+        x=y=0;
+    }
+    point(int x,int y):x(x),y(y){}
+};
+struct event
+{
+    int id,type;
+    event(){}
+    event(int id,int type):id(id),type(type){}
+ 
+};
+point rects[N][2];
+event event_v[N],event_h[N];
+bool cmpX(event a,event b)
+{
+    if(rects[a.id][a.type].x!=rects[b.id][b.type].x)
+     return rects[a.id][a.type].x<rects[b.id][b.type].x;
+    if(a.type!=b.type)
+        return a.type<b.type;
+ 
+    return rects[a.id][a.type].y<rects[b.id][b.type].y;
+}
+bool cmpY(event a,event b)
+{
+    if(rects[a.id][a.type].y!=rects[b.id][b.type].y)
+     return rects[a.id][a.type].y<rects[b.id][b.type].y;
+    if(a.type!=b.type)
+        return a.type<b.type;
+ 
+    return rects[a.id][a.type].x<rects[b.id][b.type].x;
+}
+bool inActiveset[N];
+int main()
+{
+    int n;
+    cin>>n;
+    int x1,y1,x2,y2;
+    int events_cnt=0;
+    for(int i=0;i<n;i++)
+    {
+        cin>>x1>>y1>>x2>>y2;
+ 
+        rects[i][Entry].x=x1; rects[i][Entry].y=y1; rects[i][Exist].x=x2; rects[i][Exist].y=y2;
+        event_v[events_cnt]=event(i,Entry); event_v[events_cnt+1]=event(i,Exist);
+        event_h[events_cnt]=event(i,Entry); event_h[events_cnt+1]=event(i,Exist);
+        events_cnt+=2;
+ 
+    }
+    sort(event_v,event_v+events_cnt,cmpX);
+    sort(event_h,event_h+events_cnt,cmpY);
+ 
+    inActiveset[event_v[0].id]=1;
+    ll area=0;
+    for(int i=1;i<events_cnt;i++)
+    {
+        event cur=event_v[i];
+        event pre=event_v[i-1];
+        int deltaX,deltaY,cnt=0,first_rec;
+        deltaX=rects[cur.id][cur.type].x-rects[pre.id][pre.type].x;
+        if(deltaX==0)
+        {
+            inActiveset[cur.id]=(cur.type==Entry);
+            continue;
+        }
+ 
+        for(int h=0;h<events_cnt;h++)
+        {
+            if(inActiveset[event_h[h].id]==1)
+            {
+               if(event_h[h].type==Entry)
+               {
+ 
+ 
+                if(cnt++==0)
+                    first_rec=h;
+               }
+               else
+               {
+                   if(--cnt==0)
+                   {
+                       deltaY= rects[event_h[h].id][Exist].y-rects[event_h[first_rec].id][Entry].y;
+                       area+= deltaX*deltaY;
+                   }
+               }
+            }
+        }
+        inActiveset[cur.id]=(cur.type==Entry);
+    }
+ 
+    cout<<area<<endl;
+}
+ 
