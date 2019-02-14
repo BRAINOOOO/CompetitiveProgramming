@@ -1,0 +1,275 @@
+#include <bits/stdc++.h>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+//#define   Y            imag()
+//#define   X            real()
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+//#define    dp(a,b)          (((conj(a))*(b)).real())
+//#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+//#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     PT                    complex<double>
+#define outfile freopen("out.out", "w", stdout);
+#define infile  freopen("in.in", "r", stdin);
+#define PI acos(-1)
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-9);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+int getBit(int num, int idx) {return ((num >> idx) & 1) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(int num, int idx) {return num ^ (1<<idx);}
+void FS(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask)     {mask &= (mask-1);++ret;    }return ret;}
+typedef pair<int,pair<int,int> > piii;
+const int N=100009;
+const int M=100009;
+int dfsN[N],lwlink[N],vis[M],par[N],rnk[N],timer,par2[N],rnk2[N],F[M],T[M],W[M];
+vector< vector< piii > > v,comp;
+priority_queue< piii, vector<piii> , greater< piii > > pq;
+vector< vector< pair<int,int> > > tree;
+ll mi,ans[N],tot;
+vector< piii > B;
+vector< int > v1;
+void I()
+{
+    for(int i=0;i<N;i++)
+        par[i]=i,rnk[i]=1;
+    timer=1;
+    v.resize(N);
+    comp.resize(N);
+    tree.resize(N);
+}
+int getpar(int n)
+{
+    if(par[n]==n)
+        return n;
+    return par[n]=getpar(par[n]);
+}
+void lnk(int a,int b)
+{
+    a=getpar(a);
+    b=getpar(b);
+    if(a==b)
+        return ;
+    if(rnk[a]>=rnk[b])
+    {
+        rnk[a]+=rnk[b];
+        rnk[b]=0;
+        par[b]=a;
+    }
+    else
+    {
+        rnk[b]+=rnk[a];
+        rnk[a]=0;
+        par[a]=b;
+    }
+}
+void dfs(int no)
+{
+    dfsN[no]=lwlink[no]=timer++;
+    for(int i=0;i<sz(v[no]);i++)
+    {
+        int nw=v[no][i].second.first;
+        int we=v[no][i].second.second;
+        int id=v[no][i].first;
+        if(vis[id])
+            continue;
+        vis[id]=1;
+        if(dfsN[nw]==0)
+        {
+            dfs(nw);
+            lwlink[no]=min(lwlink[no],lwlink[nw]);
+
+            if(lwlink[nw]>dfsN[no])
+            {
+                B.pb(mp(we,mp(no,nw)));
+            }
+            else
+                lnk(no,nw);
+        }
+        else
+            lwlink[no]=min(lwlink[no],dfsN[nw]);
+    }
+}
+
+int getpar2(int n)
+{
+    if(par2[n]==n)
+        return n;
+    return par2[n]=getpar2(par2[n]);
+}
+void lnk2(int a,int b)
+{
+    a=getpar2(a);
+    b=getpar2(b);
+    if(a==b)
+        return ;
+    if(rnk2[a]>=rnk2[b])
+    {
+        rnk2[a]+=rnk2[b];
+        rnk2[b]=0;
+        par2[b]=a;
+    }
+    else
+    {
+        rnk2[b]+=rnk2[a];
+        rnk2[a]=0;
+        par2[a]=b;
+    }
+}
+void dfs2(int no)
+{
+    vis[no]=1;
+    for(int i=0;i<sz(tree[no]);i++)
+    {
+        int nw=tree[no][i].first;
+        int we=tree[no][i].second;
+        if(vis[nw])
+            continue;
+        dfs2(nw);
+        ans[no]+=ans[nw]+we;
+    }
+}
+void dfs3(int no)
+{
+    vis[no]=1;
+    for(int i=0;i<sz(tree[no]);i++)
+    {
+        int nw=tree[no][i].first;
+        int we=tree[no][i].second;
+        if(vis[nw])
+            continue;
+        ll a=ans[nw];
+        ll b= tot-ans[nw]-we;
+        mi=min(mi,llabs(a-b));
+        dfs3(nw);
+    }
+}
+
+int main()
+{
+
+    I();
+    int n,m;
+    scanf("%d",&n);
+    scanf("%d",&m);
+    int f,t,w;
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d",&f);
+        scanf("%d",&t);
+        scanf("%d",&w);
+        F[i]=f; T[i]=t; W[i]=w;
+        v[f].pb(mp(i,mp(t,w)));
+        v[t].pb(mp(i,mp(f,w)));
+    }
+
+    dfs(1);
+    if(sz(B)==0)
+    {
+        printf("-1\n");
+        return 0;
+    }
+    clr(vis,0);
+    for(int i=0;i<m;i++)
+    {
+        f=F[i];
+        t=T[i];
+        w=W[i];
+
+        int ff=getpar(f);
+        int tt=getpar(t);
+
+        if(ff==tt)
+        {
+            comp[ff].pb(mp(w,mp(f,t)));
+            vis[ff]++;
+            if(vis[ff]==1)
+            v1.pb(ff);
+        }
+    }
+
+    for(int i=0;i<sz(v1);i++)
+    {
+        int no=v1[i];
+        ll sum=0;
+        for(int j=0;j<sz(comp[no]);j++)
+        {
+            int f=comp[no][j].second.first;
+            int t=comp[no][j].second.second;
+            int w=comp[no][j].first;
+            par2[f]=f;
+            par2[t]=t;
+            rnk2[f]=1;
+            rnk2[t]=1;
+            pq.push(mp(w,mp(f,t)));
+
+        }
+        while(!pq.empty())
+        {
+            int f=pq.top().second.first;
+            int t=pq.top().second.second;
+            int w=pq.top().first;
+            pq.pop();
+            f=getpar2(f);
+            t=getpar2(t);
+            if(f==t)
+                continue;
+            lnk2(f,t);
+            sum+=w;
+        }
+        ans[no]=sum;
+    }
+    int Node=0;
+    for(int i=0;i<sz(B);i++)
+    {
+        int f=B[i].second.first;
+        int t=B[i].second.second;
+        int w=B[i].first;
+        f=getpar(f);
+        t=getpar(t);
+        tree[f].pb(mp(t,w));
+        tree[t].pb(mp(f,w));
+        Node=f;
+    }
+
+    clr(vis,0);
+    dfs2(Node);
+    tot=ans[Node];
+
+    clr(vis,0);
+    mi=(1ll<<60);
+    dfs3(Node);
+
+    cout<<mi<<endl;
+}
+
+/*
+8 9
+1 2 1
+2 3 2
+3 4 3
+4 2 5
+1 7 2
+7 6 8
+6 5 3
+5 1 4
+7 8 10
+*/
+
