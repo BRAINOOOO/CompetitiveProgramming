@@ -1,0 +1,259 @@
+#include <bits/stdc++.h>
+#define sz(v)   ((int)(v).size())
+#define  all(v)    ((v).begin()),((v).end())
+#define  allr(v)    ((v).rbegin()),((v).rend())
+#define   pb         push_back
+#define   mp         make_pair
+#define   mt         make_tuple
+//#define   Y            imag()
+//#define   X            real()
+#define    clr(v,d)      memset( v, d ,sizeof(v))
+#define   angle(n)      atan2((n.imag()),(n.real()))
+#define   vec(a,b)       ((b)-(a))
+#define   length(a)      hypot( (a.imag()),(a.real()) )
+#define   normalize(a)      (a)/(length(a))
+//#define    dp(a,b)          (((conj(a))*(b)).real())
+//#define    cp(a,b)          (((conj(a))*(b)).imag())
+#define    lengthsqrt(a)       dp(a,a)
+#define    rotate0( a,ang)    ((a)*exp( point(0,ang) ))
+#define    rotateA(about,p,ang)   (rotate0(vec(about,p),ang)+about)
+#define    lcm(a,b)                ((a*b)/(__gcd(a,b)))
+#define    reflection0(m,v)         (conj((v)/(m))*(m))
+#define     reflectionA(m,v,p0)     (conj( (vec(p0,v))/(vec(p0,m)) ) * (vec(p0,m)) ) + p0
+//#define     same(p1,p2)               ( dp(  vec(p1,p2),vec(p1,p2)) < eps )
+#define     PT                    complex<double>
+#define outfile freopen("out.out", "w", stdout);
+#define infile  freopen("in.in", "r", stdin);
+#define PI acos(-1)
+typedef  long long     ll ;
+typedef  unsigned long long ull;
+const double eps= (1e-9);
+using namespace std;
+int dcmp(long double a,long double b){   return fabsl(a-b)<=eps ? 0: (a>b)? 1:-1  ;}
+int getBit(int num, int idx) {return ((num >> idx) & 1) == 1;}
+int setBit1(int num, int idx) {return num | (1<<idx);}
+ll setBit0(ll num, int idx) {return num & ~(1ll<<idx);}
+ll flipBit(int num, int idx) {return num ^ (1<<idx);}
+void FS(){ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+int countNumBit1(int mask) {int ret=0; while (mask)     {mask &= (mask-1);++ret;    }return ret;}
+const int N=10009;
+const int M=30009;
+int dfsN[N],lwlink[N],vis[M],timer,visid,vis2[N][3],vis3[N];
+vector< vector< pair<int,int> > > v,fcomp;
+stack< pair<int,int> > stk;
+vector< vector< int > > bicomp;
+map< pair<int,int> ,int> mb;
+bool member[N];
+void I()
+{
+    clr(member,0);
+    clr(vis3,0);
+    clr(dfsN,0);
+    clr(lwlink,0);
+    clr(vis,0);
+    timer=1;
+    clr(vis2,0);
+    v.clear();
+    v.resize(N);
+    fcomp.clear();
+    bicomp.clear();
+    bicomp.resize(N);
+    mb.clear();
+}
+void dfs(int no)
+{
+    dfsN[no]=lwlink[no]=timer++;
+    for(int i=0;i<sz(v[no]);i++)
+    {
+        int nw=v[no][i].first;
+        int id=v[no][i].second;
+        if(vis[id])
+            continue;
+        vis[id]=1;
+        stk.push(mp(no,nw));
+        if(dfsN[nw]==0)
+        {
+            dfs(nw);
+            lwlink[no]=min(lwlink[no],lwlink[nw]);
+            if(lwlink[nw]>=dfsN[no])
+            {
+                vector< pair<int,int> > comp;
+                int f,s;
+                do
+                {
+                    f=stk.top().first;
+                    s=stk.top().second;
+                   comp.pb(mp(f,s));
+                   stk.pop();
+
+                }while(!(f==no&&s==nw));
+                fcomp.pb(comp);
+
+            }
+        }
+        else
+            lwlink[no]=min(lwlink[no],dfsN[nw]);
+    }
+}
+int dfs2(int no,int partiy)
+{
+    if(vis2[no][partiy]==visid)
+        return 0;
+    if(vis2[no][!partiy]==visid)
+        return 1;
+
+    vis2[no][partiy]=visid;
+    for(int i=0;i<sz(bicomp[no]);i++)
+    {
+        int nw= bicomp[no][i];
+        if(dfs2(nw,!partiy))
+            return 1;
+    }
+    return 0;
+}
+int main()
+{
+    int T;
+    cin>>T;
+    int cs=1;
+    while(T--)
+    {
+        I();
+        int n,m;
+        cin>>n>>m;
+        int f,t;
+        int node=0,ed=0;
+        for(int i=0;i<m;i++)
+        {
+            cin>>f>>t;
+            if(mb[mp(f,t)])
+                continue;
+            mb[mp(f,t)]=1;
+            mb[mp(t,f)]=1;
+
+            v[f].pb(mp(t,i));
+            v[t].pb(mp(f,i));
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            if(sz(v[i])==0)
+            {
+                ed+=3;
+                node+=2;
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(dfsN[i]==0)
+             dfs(i);
+        }
+        for(int i=0;i<sz(fcomp);i++)
+        {
+            int edges=sz(fcomp[i]);
+            for(int j=0;j<sz(fcomp[i]);j++)
+            {
+                int f=fcomp[i][j].first;
+                int s=fcomp[i][j].second;
+
+                if(edges>1)
+                {
+                    member[f]=1;
+                    member[s]=1;
+                }
+            }
+        }
+        visid=1;
+        clr(vis,0);
+        for(int i=0;i<sz(fcomp);i++)
+        {
+            int Node=-1,cnt=0;
+            int edges=sz(fcomp[i]);
+            for(int j=0;j<sz(fcomp[i]);j++)
+            {
+                int f=fcomp[i][j].first;
+                int s=fcomp[i][j].second;
+                bicomp[f].pb(s);
+                bicomp[s].pb(f);
+                vis[f]++;
+                vis[s]++;
+                if(vis[f]==1)
+                    cnt++;
+                if(vis[s]==1)
+                    cnt++;
+                Node=f;
+            }
+            if(Node!=-1)
+            {
+                int ret=dfs2(Node,0);
+                //cout<<cnt<<endl;
+                if(ret==0)
+                {
+                    if(cnt==2)
+                    {
+
+                        if(edges==1)
+                        {
+                            int f=fcomp[i][0].first;
+                            int s=fcomp[i][0].second;
+                           // cout<<f<<" "<<s<<endl;
+                            if(vis3[f]==0&&member[f]==0)
+                            {
+                                //cout<<f<<endl;
+                                vis3[f]=1;
+                                ed+=3;
+                                node+=2;
+                            }
+                            if(vis3[s]==0&&member[s]==0)
+                            {
+                               // cout<<s<<endl;
+                                vis3[s]=1;
+                                ed+=3;
+                                node+=2;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ed++;
+                    }
+                }
+            }
+            for(int j=0;j<sz(fcomp[i]);j++)
+            {
+                int f=fcomp[i][j].first;
+                int s=fcomp[i][j].second;
+                bicomp[f].pop_back();
+                bicomp[s].pop_back();
+                vis[f]--;
+                vis[s]--;
+            }
+            visid++;
+        }
+
+        cout<<"Case "<<cs++<<": "<<ed<<" "<<node<<endl;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
